@@ -1,0 +1,6 @@
+reorder_imports = true
+reorder_modules = true
+tab_spaces = 2
+imports_granularity = "Item"
+normalize_comments = true
+normalize_doc_attributes = true
