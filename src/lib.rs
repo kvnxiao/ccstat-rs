@@ -53,6 +53,10 @@ fn percent_style(percent_used: u32) -> Style {
   Style::new().truecolor(r, g, b)
 }
 
+fn normalize_path(path: &str) -> String {
+  path.replace('\\', "/")
+}
+
 fn format_ms_to_min_sec(ms: i64) -> String {
   let total_seconds = ms / 1000;
   let minutes = total_seconds / 60;
@@ -135,7 +139,7 @@ pub fn render_statusline() -> Result<String> {
   let model = &data.model.display_name;
   let context_window = &data.context_window;
   let context_size = context_window.context_window_size;
-  let current_dir = &data.workspace.current_dir;
+  let current_dir = normalize_path(&data.workspace.current_dir);
   let cost = &data.cost;
 
   // Use Claude Code's pre-calculated values (v2.1.132+): total_input_tokens is
@@ -207,7 +211,11 @@ pub fn render_statusline() -> Result<String> {
     write!(dir_line, " 🌳 {}", name.color(CssColors::LightGreen))?;
   }
   for added in &data.workspace.added_dirs {
-    write!(dir_line, "\n📂 {}", added.color(CssColors::LightCyan))?;
+    let added_norm = normalize_path(added);
+    if added_norm == current_dir {
+      continue;
+    }
+    write!(dir_line, "\n📂 {}", added_norm.color(CssColors::LightCyan))?;
   }
 
   Ok(format!(
