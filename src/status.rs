@@ -16,6 +16,11 @@ pub struct StatusInput {
   pub context_window: ContextWindow,
   #[serde(rename = "exceeds_200k_tokens")]
   pub exceeds_200_k_tokens: bool,
+  pub effort: Option<Effort>,
+  pub thinking: Option<Thinking>,
+  pub rate_limits: Option<RateLimits>,
+  pub agent: Option<Agent>,
+  pub worktree: Option<Worktree>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -24,6 +29,8 @@ pub struct ContextWindow {
   pub total_input_tokens: i64,
   pub total_output_tokens: i64,
   pub context_window_size: i64,
+  pub used_percentage: Option<f64>,
+  pub remaining_percentage: Option<f64>,
   pub current_usage: Option<CurrentUsage>,
 }
 
@@ -63,6 +70,51 @@ pub struct OutputStyle {
 pub struct Workspace {
   pub current_dir: String,
   pub project_dir: String,
+  #[serde(default)]
+  pub added_dirs: Vec<String>,
+  pub git_worktree: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct Effort {
+  pub level: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct Thinking {
+  pub enabled: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct RateLimits {
+  pub five_hour: Option<RateLimitWindow>,
+  pub seven_day: Option<RateLimitWindow>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct RateLimitWindow {
+  pub used_percentage: f64,
+  pub resets_at: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct Agent {
+  pub name: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[allow(unused)]
+pub struct Worktree {
+  pub name: String,
+  pub path: String,
+  pub branch: Option<String>,
+  pub original_cwd: String,
+  pub original_branch: Option<String>,
 }
 
 impl StatusInput {
