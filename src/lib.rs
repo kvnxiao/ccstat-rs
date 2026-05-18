@@ -186,10 +186,10 @@ pub fn render_statusline() -> Result<String> {
   if let Some(rl) = &data.rate_limits {
     let mut parts: Vec<String> = Vec::new();
     if let Some(fh) = &rl.five_hour {
-      parts.push(render_rate_window("5h", fh, "%H:%M")?);
+      parts.push(render_rate_window("5h", fh, "%-I:%M %p")?);
     }
     if let Some(sd) = &rl.seven_day {
-      parts.push(render_rate_window("7d", sd, "%b %d %H:%M")?);
+      parts.push(render_rate_window("7d", sd, "%b %d %-I:%M %p")?);
     }
     if !parts.is_empty() {
       write!(
