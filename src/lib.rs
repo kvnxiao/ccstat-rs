@@ -189,7 +189,7 @@ pub fn render_statusline() -> Result<String> {
       parts.push(render_rate_window("5h", fh, "%-I:%M %p")?);
     }
     if let Some(sd) = &rl.seven_day {
-      parts.push(render_rate_window("7d", sd, "%b %d %-I:%M %p")?);
+      parts.push(render_rate_window("7d", sd, "%a %b %d %-I:%M %p")?);
     }
     if !parts.is_empty() {
       write!(
